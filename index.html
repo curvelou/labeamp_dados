@@ -1,53 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Registro de Dados de Campo - Página 2</title>
+    <title>Registro de Dados de Campo</title>
     <link rel='stylesheet' type='text/css' href='styles.css'>
     <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js'></script>
 </head>
 <body>
     <div class='container'>
-        <h1>Registro de Dados de Campo - Página 2</h1>
-        <form id='dataForm2'>
+        <h1>Registro de Dados de Campo</h1>
+        <p>Uma ferramenta simples para registrar e armazenar dados coletados em campo.</p>
+        <form id='dataForm'>
             <label>Ponto: </label><input type='text' id='point' name='point'><br>
-            <label>Tratamento: </label><input type='text' id='treatment' name='treatment'><br>
-            <label>Fibras: </label><input type='number' id='fibers' name='fibers'><br>
-            <label>Fragmentos: </label><input type='number' id='fragments' name='fragments'><br>
-            <label>Cores dos Microplásticos:</label><br>
-            <label>Azul: </label><input type='number' id='blue' name='blue'><br>
-            <label>Vermelho: </label><input type='number' id='red' name='red'><br>
-            <label>Verde: </label><input type='number' id='green' name='green'><br>
-            <label>Amarelo: </label><input type='number' id='yellow' name='yellow'><br>
-            <label>Preto: </label><input type='number' id='black' name='black'><br>
-            <label>Branco: </label><input type='number' id='white' name='white'><br>
-            <label>Laranja: </label><input type='number' id='orange' name='orange'><br>
-            <label>Rosa: </label><input type='number' id='pink' name='pink'><br>
-            <label>Marrom: </label><input type='number' id='brown' name='brown'><br>
-            <label>Cinza: </label><input type='number' id='grey' name='grey'><br>
-            <label>Translúcido: </label><input type='number' id='translucent' name='translucent'><br>
-            <label>Observações: </label><textarea id='observations' name='observations'></textarea><br>
-            <button type='button' onclick='saveData2()'>Salvar Dados</button>
+            <h2>Cores de Microplasticos</h2>
+            <div class='colorSection'>
+                <div class='colorItem'><label>Azul: </label><input type='number' id='blue' name='blue'></div>
+                <div class='colorItem'><label>Vermelho: </label><input type='number' id='red' name='red'></div>
+                <div class='colorItem'><label>Verde: </label><input type='number' id='green' name='green'></div>
+                <div class='colorItem'><label>Amarelo: </label><input type='number' id='yellow' name='yellow'></div>
+                <div class='colorItem'><label>Preto: </label><input type='number' id='black' name='black'></div>
+                <div class='colorItem'><label>Branco: </label><input type='number' id='white' name='white'></div>
+                <div class='colorItem'><label>Laranja: </label><input type='number' id='orange' name='orange'></div>
+                <div class='colorItem'><label>Rosa: </label><input type='number' id='pink' name='pink'></div>
+                <div class='colorItem'><label>Marrom: </label><input type='number' id='brown' name='brown'></div>
+                <div class='colorItem'><label>Cinza: </label><input type='number' id='grey' name='grey'></div>
+                <div class='colorItem'><label>Translucido: </label><input type='number' id='translucent' name='translucent'></div>
+            </div>
+            <label>Observacoes: </label><textarea id='observations' name='observations'></textarea><br>
+            <label>Tipo de Tratamento: </label><input type='text' id='treatmentType' name='treatmentType'><br>
+            <button type='button' onclick='saveData()'>Salvar Dados</button>
         </form>
+        <h2>Dados Salvos</h2>
         <div id='dataDisplay'></div>
-        <h2>Gráficos</h2>
-        <label>Tipo de Gráfico: </label>
+        <button type='button' onclick='downloadData()'>Baixar Dados</button>
+        <h2>Graficos</h2>
+        <label>Tipo de Grafico: </label>
         <select id='chartType'>
-            <option value='bar'>Gráfico de Barras</option>
-            <option value='line'>Gráfico de Linhas</option>
-            <option value='pie'>Gráfico de Pizza</option>
+            <option value='bar'>Barra</option>
+            <option value='line'>Linha</option>
+            <option value='pie'>Pizza</option>
+            <option value='radar'>Radar</option>
         </select><br>
         <label>Dados para Plotar: </label>
         <select id='dataToPlot'>
-            <option value='fibers'>Fibras</option>
-            <option value='fragments'>Fragmentos</option>
-            <option value='total'>Total (Fibras + Fragmentos)</option>
+            <option value='colors'>Cores de Microplasticos</option>
         </select><br>
-        <button type='button' onclick='generateChart()'>Plotar Gráfico</button>
+        <button type='button' onclick='generateChart()'>Gerar Grafico</button>
         <canvas id='dataChart' width='400' height='200'></canvas>
-        <button type='button' onclick='downloadData2()'>Baixar Dados</button>
-        <a href='index.html'>Voltar para a Página 1</a>
+        <button type='button' onclick='downloadChart()'>Baixar Grafico</button>
     </div>
-    <script src='script2.js'></script>
+    <script src='script.js'></script>
 </body>
 </html>

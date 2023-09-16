@@ -48,21 +48,15 @@ function generateChart() {
     if (dataToPlot === 'colors') {
         labels = ['Azul', 'Vermelho', 'Verde', 'Amarelo', 'Preto', 'Branco', 'Laranja', 'Rosa', 'Marrom', 'Cinza', 'Translucido'];
         data = labels.map(color => sumProperty(dataCollection, color.toLowerCase()));
-    } else if (dataToPlot === 'fibers') {
+    } else if (dataToPlot === 'fiberQuantity') {
         labels = dataCollection.map(item => item.point);
         data = dataCollection.map(item => parseInt(item.fibers ?? 0));
-    } else if (dataToPlot === 'fragments') {
+    } else if (dataToPlot === 'fragmentQuantity') {
         labels = dataCollection.map(item => item.point);
         data = dataCollection.map(item => parseInt(item.fragments ?? 0));
-    } else if (dataToPlot === 'totalFibersFragments') {
+    } else if (dataToPlot === 'total') {
         labels = dataCollection.map(item => item.point);
         data = dataCollection.map(item => parseInt(item.fibers ?? 0) + parseInt(item.fragments ?? 0));
-    } else if (dataToPlot === 'mostFoundColor') {
-        labels = dataCollection.map(item => item.point);
-        data = dataCollection.map(item => {
-            const colors = Object.values(item.colors);
-            return Math.max(...colors.map(color => parseInt(color ?? 0)));
-        });
     }
 
     const chart = new Chart(ctx, {

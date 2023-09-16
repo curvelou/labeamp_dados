@@ -1,108 +1,92 @@
-let dataStorage2 = [];
+let dataCollection = [];
 
-function saveData2() {
-    let dataForm2 = document.getElementById('dataForm2');
-    let data = {
-        point: dataForm2.point.value,
-        treatment: dataForm2.treatment.value,
-        fibers: parseInt(dataForm2.fibers.value),
-        fragments: parseInt(dataForm2.fragments.value),
-        colors: {
-            blue: parseInt(dataForm2.blue.value),
-            red: parseInt(dataForm2.red.value),
-            green: parseInt(dataForm2.green.value),
-            yellow: parseInt(dataForm2.yellow.value),
-            black: parseInt(dataForm2.black.value),
-            white: parseInt(dataForm2.white.value),
-            orange: parseInt(dataForm2.orange.value),
-            pink: parseInt(dataForm2.pink.value),
-            brown: parseInt(dataForm2.brown.value),
-            grey: parseInt(dataForm2.grey.value),
-            translucent: parseInt(dataForm2.translucent.value),
-        },
-        observations: dataForm2.observations.value,
+function saveData() {
+    const point = document.getElementById('point').value;
+    const colors = {
+        azul: document.getElementById('blue').value,
+        vermelho: document.getElementById('red').value,
+        verde: document.getElementById('green').value,
+        amarelo: document.getElementById('yellow').value,
+        preto: document.getElementById('black').value,
+        branco: document.getElementById('white').value,
+        laranja: document.getElementById('orange').value,
+        rosa: document.getElementById('pink').value,
+        marrom: document.getElementById('brown').value,
+        cinza: document.getElementById('grey').value,
+        translucido: document.getElementById('translucent').value,
     };
-    dataStorage2.push(data);
+    const observations = document.getElementById('observations').value;
+    const treatmentType = document.getElementById('treatmentType').value;
 
-    displayData2();
-}
+    const data = {
+        point,
+        colors,
+        observations,
+        treatmentType,
+    };
 
-function displayData2() {
-    let dataDisplay = document.getElementById('dataDisplay');
-    dataDisplay.innerHTML = '';
-    dataStorage2.forEach((data, index) => {
-        let dataItem = document.createElement('div');
-        dataItem.className = 'dataItem';
-        dataItem.innerHTML = `<strong>Ponto:</strong> ${data.point}<br><strong>Tratamento:</strong> ${data.treatment}<br><strong>Fibras:</strong> ${data.fibers}<br><strong>Fragmentos:</strong> ${data.fragments}<br><strong>Cores dos Microplásticos:</strong><br>${Object.entries(data.colors).map(([color, count]) => `<span>${color}: ${count}</span>`).join('<br>')}`;
-        dataDisplay.appendChild(dataItem);
-    });
-}
-
-function downloadData2() {
-    let blob = new Blob([JSON.stringify(dataStorage2)], { type: 'application/json' });
-    saveAs(blob, 'data_page2.json');
+    dataCollection.push(data);
+    document.getElementById('dataDisplay').innerText = JSON.stringify(dataCollection, null, 2);
 }
 
 function generateChart() {
-    let chartType = document.getElementById('chartType').value;
-    let dataToPlot = document.getElementById('dataToPlot').value;
+    const ctx = document.getElementById('dataChart').getContext('2d');
+    const chartType = document.getElementById('chartType').value;
+    const dataToPlot = document.getElementById('dataToPlot').value;
 
     let labels = [];
     let data = [];
 
-    if (dataToPlot === 'fibers' || dataToPlot === 'fragments' || dataToPlot === 'total') {
-        dataStorage2.forEach((item, index) => {
-            labels.push('Data ' + (index + 1));
-            if (dataToPlot === 'fibers') {
-                data.push(item.fibers);
-            } else if (dataToPlot === 'fragments') {
-                data.push(item.fragments);
-            } else {
-                data.push(item.fibers + item.fragments);
-            }
-        });
-    } else {
-        let colorData = {
-            blue: 0,
-            red: 0,
-            green: 0,
-            yellow: 0,
-            black: 0,
-            white: 0,
-            orange: 0,
-            pink: 0,
-            brown: 0,
-            grey: 0,
-            translucent: 0,
-        };
-        dataStorage2.forEach(item => {
-            for (let color in colorData) {
-                colorData[color] += item.colors[color];
-            }
-        });
-        labels = Object.keys(colorData);
-        data = Object.values(colorData);
+    if (dataToPlot === 'colors') {
+        labels = ['Azul', 'Vermelho', 'Verde', 'Amarelo', 'Preto', 'Branco', 'Laranja', 'Rosa', 'Marrom', 'Cinza', 'Translucido'];
+        data = [
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.azul || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.vermelho || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.verde || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.amarelo || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.preto || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.branco || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.laranja || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.rosa || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.marrom || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.cinza || 0), 0),
+            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.translucido || 0), 0),
+        ];
     }
 
-    let ctx = document.getElementById('dataChart').getContext('2d');
-    new Chart(ctx, {
+    const chart = new Chart(ctx, {
         type: chartType,
         data: {
             labels: labels,
             datasets: [{
-                label: 'Dados de Coleta',
+                label: 'Quantidade',
                 data: data,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
+                backgroundColor: [
+                    'blue',
+                    'red',
+                    'green',
+                    'yellow',
+                    'black',
+                    'white',
+                    'orange',
+                    'pink',
+                    'brown',
+                    'grey',
+                    'lightgrey',
+                ],
+            }],
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
     });
+}
+
+function downloadData() {
+    const blob = new Blob([JSON.stringify(dataCollection, null, 2)], { type: 'application/json' });
+    saveAs(blob, 'data.json');
+}
+
+function downloadChart() {
+    const link = document.createElement('a');
+    link.href = document.getElementById('dataChart').toDataURL();
+    link.download = 'chart.png';
+    link.click();
 }

@@ -3,8 +3,10 @@ let dataStorage2 = [];
 function saveData2() {
     let dataForm2 = document.getElementById('dataForm2');
     let data = {
-        fragmentQuantity: parseInt(dataForm2.fragmentQuantity.value),
-        fiberQuantity: parseInt(dataForm2.fiberQuantity.value),
+        point: dataForm2.point.value,
+        treatment: dataForm2.treatment.value,
+        fibers: parseInt(dataForm2.fibers.value),
+        fragments: parseInt(dataForm2.fragments.value),
         colors: {
             blue: parseInt(dataForm2.blue.value),
             red: parseInt(dataForm2.red.value),
@@ -31,7 +33,7 @@ function displayData2() {
     dataStorage2.forEach((data, index) => {
         let dataItem = document.createElement('div');
         dataItem.className = 'dataItem';
-        dataItem.innerText = `Fragmentos: ${data.fragmentQuantity}, Fibras: ${data.fiberQuantity}, Observações: ${data.observations}`;
+        dataItem.innerHTML = `<strong>Ponto:</strong> ${data.point}<br><strong>Tratamento:</strong> ${data.treatment}<br><strong>Fibras:</strong> ${data.fibers}<br><strong>Fragmentos:</strong> ${data.fragments}<br><strong>Cores dos Microplásticos:</strong><br>${Object.entries(data.colors).map(([color, count]) => `<span>${color}: ${count}</span>`).join('<br>')}`;
         dataDisplay.appendChild(dataItem);
     });
 }
@@ -48,15 +50,15 @@ function generateChart() {
     let labels = [];
     let data = [];
 
-    if (dataToPlot === 'fragmentQuantity' || dataToPlot === 'fiberQuantity' || dataToPlot === 'total') {
+    if (dataToPlot === 'fibers' || dataToPlot === 'fragments' || dataToPlot === 'total') {
         dataStorage2.forEach((item, index) => {
             labels.push('Data ' + (index + 1));
-            if (dataToPlot === 'fragmentQuantity') {
-                data.push(item.fragmentQuantity);
-            } else if (dataToPlot === 'fiberQuantity') {
-                data.push(item.fiberQuantity);
+            if (dataToPlot === 'fibers') {
+                data.push(item.fibers);
+            } else if (dataToPlot === 'fragments') {
+                data.push(item.fragments);
             } else {
-                data.push(item.fragmentQuantity + item.fiberQuantity);
+                data.push(item.fibers + item.fragments);
             }
         });
     } else {
@@ -103,11 +105,4 @@ function generateChart() {
             }
         }
     });
-}
-
-function downloadChart() {
-    let link = document.createElement('a');
-    link.href = document.getElementById('dataChart').toDataURL();
-    link.download = 'chart.png';
-    link.click();
 }

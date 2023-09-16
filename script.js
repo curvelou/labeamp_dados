@@ -22,7 +22,13 @@ function saveData() {
 }
 
 function generateChart() {
-    const ctx = document.getElementById('dataChart').getContext('2d');
+    const chartContainer = document.getElementById('chartContainer');
+    const canvas = document.createElement('canvas');
+    canvas.width = 400;
+    canvas.height = 200;
+    chartContainer.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
     const chartType = document.getElementById('chartType').value;
     const dataToPlot = document.getElementById('dataToPlot').value;
 
@@ -97,3 +103,10 @@ function downloadChart() {
     link.download = 'chart.png';
     link.click();
 }
+window.onload = function() {
+    const storedData = localStorage.getItem('dataCollection');
+    if (storedData) {
+        dataCollection = JSON.parse(storedData);
+        document.getElementById('dataDisplay').innerText = JSON.stringify(dataCollection, null, 2);
+    }
+};

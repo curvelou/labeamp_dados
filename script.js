@@ -1,4 +1,8 @@
-let dataCollection = [];
+const dataCollection = [];
+
+function sumProperty(arr, prop) {
+    return arr.reduce((sum, item) => sum + parseInt(item[prop] ?? 0), 0);
+}
 
 function saveData() {
     const point = document.getElementById('point').value;
@@ -34,21 +38,6 @@ function saveData() {
 }
 
 function generateChart() {
-    // ... (O código para gerar o gráfico será atualizado aqui para incluir as novas opções de plotagem)
-}
-
-function downloadData() {
-    const blob = new Blob([JSON.stringify(dataCollection, null, 2)], { type: 'application/json' });
-    saveAs(blob, 'data.json');
-}
-
-function downloadChart() {
-    const link = document.createElement('a');
-    link.href = document.getElementById('dataChart').toDataURL();
-    link.download = 'chart.png';
-    link.click();
-}
-function generateChart() {
     const ctx = document.getElementById('dataChart').getContext('2d');
     const chartType = document.getElementById('chartType').value;
     const dataToPlot = document.getElementById('dataToPlot').value;
@@ -58,24 +47,21 @@ function generateChart() {
 
     if (dataToPlot === 'colors') {
         labels = ['Azul', 'Vermelho', 'Verde', 'Amarelo', 'Preto', 'Branco', 'Laranja', 'Rosa', 'Marrom', 'Cinza', 'Translucido'];
-        data = [
-            dataCollection.reduce((sum, item) => sum + parseInt(item.colors.azul || 0), 0),
-            // ... (o mesmo para outras cores)
-        ];
+        data = labels.map(color => sumProperty(dataCollection, color.toLowerCase()));
     } else if (dataToPlot === 'fibers') {
         labels = dataCollection.map(item => item.point);
-        data = dataCollection.map(item => parseInt(item.fibers || 0));
+        data = dataCollection.map(item => parseInt(item.fibers ?? 0));
     } else if (dataToPlot === 'fragments') {
         labels = dataCollection.map(item => item.point);
-        data = dataCollection.map(item => parseInt(item.fragments || 0));
+        data = dataCollection.map(item => parseInt(item.fragments ?? 0));
     } else if (dataToPlot === 'totalFibersFragments') {
         labels = dataCollection.map(item => item.point);
-        data = dataCollection.map(item => parseInt(item.fibers || 0) + parseInt(item.fragments || 0));
+        data = dataCollection.map(item => parseInt(item.fibers ?? 0) + parseInt(item.fragments ?? 0));
     } else if (dataToPlot === 'mostFoundColor') {
         labels = dataCollection.map(item => item.point);
         data = dataCollection.map(item => {
             const colors = Object.values(item.colors);
-            return Math.max(...colors.map(color => parseInt(color || 0)));
+            return Math.max(...colors.map(color => parseInt(color ?? 0)));
         });
     }
 
@@ -102,4 +88,16 @@ function generateChart() {
             }],
         },
     });
+}
+
+function downloadData() {
+    const blob = new Blob([JSON.stringify(dataCollection, null, 2)], { type: 'application/json' });
+    saveAs(blob, 'data.json');
+}
+
+function downloadChart() {
+    const link = document.createElement('a');
+    link.href = document.getElementById('dataChart').toDataURL();
+    link.download = 'chart.png';
+    link.click();
 }

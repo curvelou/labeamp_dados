@@ -1,38 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Registro de Dados de Campo - Página 1</title>
-    <link rel='stylesheet' type='text/css' href='styles.css'>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js'></script>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css' />
-</head>
-<body>
-    <div class='container'>
-        <h1>Registro de Dados de Campo - Página 1</h1>
-        <form id='dataForm1'>
-            <label>Ponto: </label><input type='text' id='point' name='point'><br>
-            <label>Latitude: </label><input type='text' id='latitude' name='latitude'><br>
-            <label>Longitude: </label><input type='text' id='longitude' name='longitude'><br>
-            <label>Condições de Maré: </label>
-            <select id='tideCondition' name='tideCondition'>
-                <option value='Enchente'>Enchente</option>
-                <option value='Vazante'>Vazante</option>
-            </select><br>
-            <label>Condição da Água: </label><input type='text' id='waterCondition' name='waterCondition'><br>
-            <label>Data: </label><input type='date' id='date' name='date'><br>
-            <label>Hora: </label><input type='time' id='time' name='time'><br>
-            <button type='button' onclick='saveData1()'>Salvar Dados</button>
-        </form>
-        <div id='map' style='height: 300px;'></div>
-        <button type='button' onclick='downloadData1()'>Baixar Dados</button>
-        <a href='page2.html'>Ir para a Página 2</a>
-    </div>
-    <script src='script1.js'></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
     <title>Registro de Dados de Campo - Página 2</title>
     <link rel='stylesheet' type='text/css' href='styles.css'>
     <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
@@ -42,15 +10,42 @@
     <div class='container'>
         <h1>Registro de Dados de Campo - Página 2</h1>
         <form id='dataForm2'>
-            <!-- Campos para Quantidade de Fragmentos, Quantidade de Fibras, Cores dos Microplásticos, Observações serão adicionados aqui -->
+            <label>Ponto: </label><input type='text' id='point' name='point'><br>
+            <label>Tratamento: </label><input type='text' id='treatment' name='treatment'><br>
+            <label>Fibras: </label><input type='number' id='fibers' name='fibers'><br>
+            <label>Fragmentos: </label><input type='number' id='fragments' name='fragments'><br>
+            <label>Cores dos Microplásticos:</label><br>
+            <label>Azul: </label><input type='number' id='blue' name='blue'><br>
+            <label>Vermelho: </label><input type='number' id='red' name='red'><br>
+            <label>Verde: </label><input type='number' id='green' name='green'><br>
+            <label>Amarelo: </label><input type='number' id='yellow' name='yellow'><br>
+            <label>Preto: </label><input type='number' id='black' name='black'><br>
+            <label>Branco: </label><input type='number' id='white' name='white'><br>
+            <label>Laranja: </label><input type='number' id='orange' name='orange'><br>
+            <label>Rosa: </label><input type='number' id='pink' name='pink'><br>
+            <label>Marrom: </label><input type='number' id='brown' name='brown'><br>
+            <label>Cinza: </label><input type='number' id='grey' name='grey'><br>
+            <label>Translúcido: </label><input type='number' id='translucent' name='translucent'><br>
+            <label>Observações: </label><textarea id='observations' name='observations'></textarea><br>
             <button type='button' onclick='saveData2()'>Salvar Dados</button>
         </form>
         <div id='dataDisplay'></div>
-        <button type='button' onclick='downloadData2()'>Baixar Dados</button>
         <h2>Gráficos</h2>
-        <!-- Campos para seleção de gráficos serão adicionados aqui -->
+        <label>Tipo de Gráfico: </label>
+        <select id='chartType'>
+            <option value='bar'>Gráfico de Barras</option>
+            <option value='line'>Gráfico de Linhas</option>
+            <option value='pie'>Gráfico de Pizza</option>
+        </select><br>
+        <label>Dados para Plotar: </label>
+        <select id='dataToPlot'>
+            <option value='fibers'>Fibras</option>
+            <option value='fragments'>Fragmentos</option>
+            <option value='total'>Total (Fibras + Fragmentos)</option>
+        </select><br>
+        <button type='button' onclick='generateChart()'>Plotar Gráfico</button>
         <canvas id='dataChart' width='400' height='200'></canvas>
-        <button type='button' onclick='downloadChart()'>Baixar Gráfico</button>
+        <button type='button' onclick='downloadData2()'>Baixar Dados</button>
         <a href='index.html'>Voltar para a Página 1</a>
     </div>
     <script src='script2.js'></script>
